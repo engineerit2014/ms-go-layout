@@ -6,7 +6,7 @@ import (
 	"github.com/go-pg/pg/v10"
 )
 
-func Init(db *pg.DB) {
+func Execute(db *pg.DB) {
 	// create a new collection with gopg_migrations table
 	c := migrations.NewCollection()
 	c.DisableSQLAutodiscover(true)

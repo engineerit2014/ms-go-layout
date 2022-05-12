@@ -1,18 +1,15 @@
-# Microservice: Echo Framework Example
-This project shows the use of Echo Framework in Golang.  
-
-This repository runs a simple main daemon (main) that implements a REST API for users. The daemon uses a postgres database to persist data and after creation uses migrations to create the user schema.
+# Project
+This project is an example of layout using the Clean Architecture concepts.  
 
 ## Table of Contents
 
 - [Running](#running)
     - [Dependencies](#dependencies)
     - [Environment Variables](#environment-variables)
-    - [Make Rule](#make-rule)
-- [Testing](#testing)
-    - Coming soon
 
 ## Running
+
+This repository runs a simple main daemon (main) that implements a REST API for users. The daemon uses a postgres database to persist data and after creation uses migrations to create the user schema.
 
 ### Dependencies 
 
@@ -44,32 +41,3 @@ pattern, replacing `[ENV_NAME]` with the name of the environment variable and `[
 desired value of the environment variable: `export [ENV_NAME]=[ENV_VALUE]`. To unset any set environment
 variable, simply execute the following pattern, replacing `[ENV_NAME]` with the name of the environment
 variable: `unset [ENV_NAME]`.
-
-### Make Rule
-
-To run the services simply execute the following command:
-
-```shell
-make run
-```
-
-This will stop any containers defined by the compose file if already running
-and then rebuild the containers using the compose file. The main daemon (`main`)
-will be available at `localhost:8080` and the postgres instance will be available
-at `localhost:5432`.
-
-To stop the services simply execute the following command:
-
-```shell
-make stop
-```
-
-To down the services simply execute the following command:
-
-```shell
-make down
-```
-
-## Testing
-
-Coming soon

@@ -7,12 +7,12 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	pgKit "github.com/laironacosta/kit-go/postgresql"
-	"github.com/laironacosta/ms-go-layout/infrastructure/adapters/shared/services"
-	"github.com/laironacosta/ms-go-layout/infrastructure/adapters/users/repositories"
+	"github.com/laironacosta/ms-go-layout/infrastructure/adapters/repositories"
+	"github.com/laironacosta/ms-go-layout/infrastructure/adapters/services"
 	"github.com/laironacosta/ms-go-layout/infrastructure/api"
-	"github.com/laironacosta/ms-go-layout/infrastructure/api/users/handler"
+	"github.com/laironacosta/ms-go-layout/infrastructure/api/handler"
 	"github.com/laironacosta/ms-go-layout/infrastructure/resources/postgres/migrations"
-	"github.com/laironacosta/ms-go-layout/internal/app/usercases/users/createuser"
+	"github.com/laironacosta/ms-go-layout/internal/app/usecases/users/createuser"
 	"github.com/pkg/errors"
 )
 
@@ -28,11 +28,11 @@ var cfg struct {
 }
 
 func main() {
-	echo := echo.New()
-	echo.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+	e := echo.New()
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}, latency_human={latency_human}\n",
 	}))
-	echo.Use(middleware.Recover())
+	e.Use(middleware.Recover())
 
 	if err := envconfig.Process("LIST", &cfg); err != nil {
 		err = errors.Wrap(err, "parse environment variables")
@@ -46,7 +46,7 @@ func main() {
 		Password: cfg.DBPass,
 		Database: cfg.DBName,
 	})
-	migrations.Init(db)
+	migrations.Execute(db)
 
 	// Repositories
 	userRepo := repositories.NewUserRepository(db)
@@ -65,8 +65,8 @@ func main() {
 
 	// Routers
 	userGroup := handler.NewUserGroup(createUserHandler)
-	r := api.NewRouter(echo, userGroup)
+	r := api.NewRouter(e, userGroup)
 	r.Init()
 
-	echo.Start(":8080")
+	e.Start(":8080")
 }

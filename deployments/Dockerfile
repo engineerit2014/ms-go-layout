@@ -20,7 +20,7 @@ RUN go mod download
 # Copy the source from the current directory to the working Directory inside the container
 COPY . .
 
-# Build the Go usercases
+# Build the Go usecases
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 # Start a new stage from scratch
